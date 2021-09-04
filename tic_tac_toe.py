@@ -96,14 +96,33 @@ def win_pict(num):
     my_field = re_start()
     game_loop(my_field)
 
+#nobody win picture
+def nobody_win_pict():
+    print("*" * 30)
+    print(f"*        NOBODY WIN!       *")
+    print("*" * 30)
+    my_field = re_start()
+    game_loop(my_field)
+
 
 #check the game state
 def check_field(num, figure, my_field):
     match_list = [36, 63, 66, 69, 96] #if sum of count_ver and count_hor match with the list element = win
     match_flag = 0
+    empty_field_flag = 0
     index_counter = 0
     count_ver = 0
     count_hor = 0
+    empty_field = '-'
+
+    #nobody win check
+    for t in range(len(my_field)):
+        empty_field_flag += 1 if empty_field in my_field[t] else 0
+    if empty_field_flag == 0:
+        my_non_stop = False
+        nobody_win_pict()
+        return my_non_stop
+
     for i in range(1, len(my_field)):
         count_ver += 1
         count_hor = 0
