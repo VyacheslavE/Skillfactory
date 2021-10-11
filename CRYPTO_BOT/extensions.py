@@ -1,5 +1,6 @@
+import json
 import requests
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 from config import keys
 
 class APIException(Exception):
@@ -20,8 +21,7 @@ class MyConverter:
         except ValueError:
             raise APIException(f"Не удалось обработать количество {amount}")
 
-        r = requests.get(
-            f'https://minfin.com.ua/ua/currency/converter/?from={keys[qoute]}&to={keys[base]}&val1={amount}&val2=')
-        raw_content = BeautifulSoup(r.content, 'lxml')
-        div = raw_content.find_all('div', class_="sc-1xh0v1v-0 chYljb")
-        return div[1].find('input')['value']
+        # json + API variant
+        r = requests.get(f'http://api.exchangeratesapi.io/v1/latest?access_key=f390b600dca7472d0dd52d9bb4115729')
+        return round(json.loads(r.content)['rates'][keys[qoute]] * amount, 2)
+
